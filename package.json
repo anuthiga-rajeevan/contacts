@@ -1,0 +1,35 @@
+{
+  "name": "Contacts",
+  "version": "1.0.0",
+  "description": "My Contacts",
+  "main": "index.js",
+  "scripts": {
+    "client": "npm run start --prefix client",
+    "server": "npm run dev --prefix server",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:client": "npm run test --prefix frontend",
+    "test:server": "npm run test --prefix backend",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "lint": "eslint --quiet **/**/**/*.{js,jsx,ts,tsx,json}",
+    "lint:fix": "eslint --fix \"**/**/**/*.{js,jsx,ts,tsx,json}\"",
+    "format": "prettier --write \"**/**/**/*.{js,jsx,ts,tsx,css,json}\" --config ./.prettierrc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "5.30.0",
+    "@typescript-eslint/parser": "5.30.0",
+    "concurrently": "6.0.2",
+    "eslint": "7.32.0",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-import-resolver-typescript": "3.1.1",
+    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-prettier": "4.1.0",
+    "eslint-plugin-react": "^7.30.1",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "prettier": "2.2.1",
+    "prettier-eslint": "12.0.0",
+    "prettier-eslint-cli": "5.0.1"
+  }
+}

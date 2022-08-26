@@ -1,0 +1,14 @@
+node_modules
+__data__
+package.json
+package-lock.json
+tsconfig.json
+.eslintrc.json
+coverage
+dist
+public
+build
+tsconfig.build.json
+jest.config.js
+build.ts
+nodemon.json
