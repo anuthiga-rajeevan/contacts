@@ -1,4 +1,4 @@
-import {Schema, model, Document } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 
 export interface SavedUserDocument extends Document {
   name: string;
@@ -17,7 +17,7 @@ const userSchema = new Schema({
   email: {
     type: String,
     required: [true, 'Email is required'],
-    unique: [true, 'Email must be unique']
+    unique: [true, 'Email must be unique'],
   },
   password: {
     type: String,

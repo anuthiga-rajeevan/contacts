@@ -11,12 +11,8 @@ describe('generateAuthToken', () => {
       password: 'dummyPassword',
     };
     generateAuthToken(user);
-    expect(jwt.sign).toHaveBeenCalledWith(
-      { user_id: user._id, email: user.email },
-      'token_key',
-      {
-        expiresIn: '2h',
-      },
-    );
+    expect(jwt.sign).toHaveBeenCalledWith({ user_id: user._id, email: user.email }, 'token_key', {
+      expiresIn: '2h',
+    });
   });
 });

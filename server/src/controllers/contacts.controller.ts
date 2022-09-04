@@ -45,6 +45,6 @@ export const getContacts = asyncHandler(async (req, res, next) => {
  * @desc     Deletes a contact based on contactId
  * @access   Private
  */
- export const deleteContact = asyncHandler(async (req, res, next) => {
-    res.status(200).json(res.advancedResults);
-  });
+export const deleteContact = asyncHandler(async (req, res, next) => {
+  res.status(200).json(res.advancedResults);
+});

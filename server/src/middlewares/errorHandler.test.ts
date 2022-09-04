@@ -28,7 +28,7 @@ describe('errorHandler', () => {
     const err = {
       name: 'CastError',
       path: 'contact_id',
-      message: 'error message'
+      message: 'error message',
     };
 
     errorHandler(err, {}, res, next);
@@ -56,10 +56,10 @@ describe('errorHandler', () => {
     const err = {
       name: 'ValidationError',
       errors: [
-        {message: 'Name is required!'},
-        {message: 'Email is required!'},
-        {message: 'Password is required!'},
-      ]
+        { message: 'Name is required!' },
+        { message: 'Email is required!' },
+        { message: 'Password is required!' },
+      ],
     };
 
     errorHandler(err, {}, res, next);
@@ -69,5 +69,4 @@ describe('errorHandler', () => {
       error: 'Name is required!,Email is required!,Password is required!',
     });
   });
-  
 });

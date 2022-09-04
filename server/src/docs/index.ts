@@ -1,6 +1,3 @@
-// import { createFlowmapper, flowmapperRequestBody } from './schema/createFlowmapper';
-// import { accountResponse } from './schema/accounts';
-
 export const options = {
   openapi: '3.0.0',
   info: {
@@ -14,21 +11,4 @@ export const options = {
     },
   ],
   tags: ['Contacts'],
-//   paths: {
-//     '/api/accounts/{accountId}/flowmapper': {
-//       post: createFlowmapper,
-//     },
-//   },
-//   components: {
-//     securitySchemes: {
-//       bearerAuth: {
-//         type: 'http',
-//         scheme: 'bearer',
-//       },
-//     },
-//     schemas: {
-//       flowmapperRequestBody,
-//       accountResponse,
-//     },
-//   },
 };

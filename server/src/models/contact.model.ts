@@ -5,7 +5,7 @@ const importantDateSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Important Date type is required'],
   },
-  date: { type: Date, required: [true, 'Important Date is required'] },
+  date: { type: Number, required: [true, 'Important Date is required'] },
 });
 
 const emailSchema = new mongoose.Schema({

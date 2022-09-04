@@ -1,3 +1,3 @@
 export default {
-    sign: jest.fn(() => 'dummyToken'),
-} 
+  sign: jest.fn(() => 'dummyToken'),
+};

@@ -1,5 +1,10 @@
 import express from 'express';
-import { createContact, getContact, getContacts, deleteContact } from '../controllers/contacts.controller';
+import {
+  createContact,
+  getContact,
+  getContacts,
+  deleteContact,
+} from '../controllers/contacts.controller';
 // import advancedResults from '../middlewares/advancedResults';
 // import { authorize } from '../middlewares/auth';
 // import authenticationRequired from '../middlewares/authentication';
@@ -22,15 +27,15 @@ Router.route('/')
 
 Router.get(
   '/:contactId',
-//   authenticationRequired,
-//   authorize(process.env.OMT_ROLE_SUPER_ADMIN, process.env.OMT_ROLE_ADMIN),
+  //   authenticationRequired,
+  //   authorize(process.env.OMT_ROLE_SUPER_ADMIN, process.env.OMT_ROLE_ADMIN),
   getContact,
 );
 
 Router.delete(
   '/:contactId',
-//   authenticationRequired,
-//   authorize(process.env.OMT_ROLE_SUPER_ADMIN, process.env.OMT_ROLE_ADMIN),
+  //   authenticationRequired,
+  //   authorize(process.env.OMT_ROLE_SUPER_ADMIN, process.env.OMT_ROLE_ADMIN),
   deleteContact,
 );
 

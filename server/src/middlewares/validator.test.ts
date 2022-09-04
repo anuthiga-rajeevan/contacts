@@ -27,7 +27,7 @@ describe('validator', () => {
       body: { email: 'Hello@GMAIL.com', password: 'dummyPassword' },
     };
     validator('login')(req, {}, next);
-    expect(req.body).toStrictEqual({email: 'hello@gmail.com', password: 'dummyPassword'});
+    expect(req.body).toStrictEqual({ email: 'hello@gmail.com', password: 'dummyPassword' });
     expect(next).toHaveBeenCalled();
   });
 });

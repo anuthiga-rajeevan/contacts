@@ -1,4 +1,3 @@
-import {register, login} from './users.validators';
+import { register, login } from './users.validators';
 
-
-export default {register, login};
+export default { register, login };

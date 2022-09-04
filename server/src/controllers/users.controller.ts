@@ -42,7 +42,7 @@ export const login = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse(`User with '${email}' not found`, 401));
   }
 
-  if (!await bcrypt.compare(password, selectedUser.password)) {
+  if (!(await bcrypt.compare(password, selectedUser.password))) {
     return next(new ErrorResponse('Password not match', 401));
   }
 
