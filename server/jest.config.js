@@ -1,6 +1,7 @@
 module.exports = {
-    roots: ['<rootDir>/server'], // jest considers `backend/server` as the root path now instead of `/backend`
+    roots: ['<rootDir>/src'], // jest considers `server/src` as the root path now instead of `/backend`
     testEnvironment: 'node',
+    globalTeardown: '<rootDir>/src/testUtils/globalTearDown.ts',
     transform: {
       '^.+\\.tsx?$': 'ts-jest',
     },
