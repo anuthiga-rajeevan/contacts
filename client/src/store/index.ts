@@ -3,11 +3,13 @@ import { useDispatch } from 'react-redux';
 
 import alertReducer from './alertSlice';
 import userReducer from './userSlice';
+import contactReducer from './contactSlice';
 
 const store = configureStore({
   reducer: {
     alert: alertReducer,
     user: userReducer,
+    contact: contactReducer,
   },
 });
 

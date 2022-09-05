@@ -25,6 +25,7 @@ const alertSlice = createSlice({
       state.push({ ...action.payload, id: uuid() });
     },
     removeAlert(state) {
+      console.log('remove alert called')
       state.pop();
     },
   },

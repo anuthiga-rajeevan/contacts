@@ -5,38 +5,16 @@ import {
   getContacts,
   deleteContact,
 } from '../controllers/contacts.controller';
-// import advancedResults from '../middlewares/advancedResults';
-// import { authorize } from '../middlewares/auth';
-// import authenticationRequired from '../middlewares/authentication';
-import Contact from '../models/contact.model';
+import authenticationRequired from '../middlewares/authenticationRequired';
 
 const Router = express.Router();
 
 Router.route('/')
-  .get(
-    // authenticationRequired,
-    // authorize(process.env.OMT_ROLE_SUPER_ADMIN, process.env.OMT_ROLE_ADMIN),
-    // advancedResults({ model: Contact }),
-    getContacts,
-  )
-  .post(
-    // authenticationRequired,
-    // authorize(process.env.OMT_ROLE_SUPER_ADMIN, process.env.OMT_ROLE_ADMIN),
-    createContact,
-  );
+  .get(authenticationRequired, getContacts)
+  .post(authenticationRequired, createContact);
 
-Router.get(
-  '/:contactId',
-  //   authenticationRequired,
-  //   authorize(process.env.OMT_ROLE_SUPER_ADMIN, process.env.OMT_ROLE_ADMIN),
-  getContact,
-);
-
-Router.delete(
-  '/:contactId',
-  //   authenticationRequired,
-  //   authorize(process.env.OMT_ROLE_SUPER_ADMIN, process.env.OMT_ROLE_ADMIN),
-  deleteContact,
-);
+Router.route('/:contactId')
+  .get(authenticationRequired, getContact)
+  .delete(authenticationRequired, deleteContact);
 
 export default Router;

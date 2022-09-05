@@ -37,7 +37,8 @@ export const getContact = asyncHandler(async (req, res, next) => {
  * @access   Private
  */
 export const getContacts = asyncHandler(async (req, res, next) => {
-  res.status(200).json(res.advancedResults);
+  const contacts = await Contact.find();
+  res.status(200).json({ success: true, data: contacts });
 });
 
 /**

@@ -1,8 +1,11 @@
 import { Box, Button, Paper, styled, TextField, Typography } from '@mui/material';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { login } from '../../store/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, getUser } from '../../store/userSlice';
+import { AppDispatch, RootState } from '../../store';
+import { LoadingStatus } from '../../types/types';
+import Spinner from '../../components/spinner/Spinner';
 
 const Item = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1),
@@ -11,12 +14,27 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function Login() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const loginStatus = useSelector((state: RootState) => state.user.loginStatus);
+  const getUserInfoStatus = useSelector((state: RootState) => state.user.getUserInfoStatus);
+  const userInfo = useSelector((state: RootState) => state.user.userInfo);
 
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (loginStatus === LoadingStatus.success && getUserInfoStatus === LoadingStatus.idle) {
+        dispatch(getUser());
+    }
+    if (getUserInfoStatus === LoadingStatus.success && !userInfo.name) {
+        navigate('/login');
+    }
+    if (getUserInfoStatus === LoadingStatus.success && userInfo.name) {
+        navigate('/');
+    }
+}, [getUserInfoStatus, loginStatus, dispatch, navigate, userInfo]);
 
   const validate = () => {
     setEmailError(null);
@@ -35,7 +53,6 @@ function Login() {
   const handleSubmit = () => {
     if (validate()) {
       dispatch(login(formData));
-      navigate('/spells');
     }
   };
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -50,62 +67,63 @@ function Login() {
       }}
       autoComplete='off'
     >
-      <Item>
-        <Typography
-          variant='h2'
-          noWrap
-          component='a'
-          href='/'
-          sx={{
-            fontWeight: 200,
-            color: 'inherit',
-            textDecoration: 'none',
-          }}
-        >
-          Login
-        </Typography>
-        <TextField
-          required
-          id='email'
-          label='Email'
-          name='email'
-          value={formData.email}
-          onChange={handleChange}
-        />
-        <div style={{ color: 'red', fontWeight: 'light' }}>{emailError}</div>
-        <TextField
-          required
-          id='password'
-          label='Password'
-          type='password'
-          name='password'
-          value={formData.password}
-          onChange={handleChange}
-        />
-        <div style={{ color: 'red', fontWeight: 'light' }}>{passwordError}</div>
-        <Button variant='contained' sx={{ m: 2, width: '50%' }} onClick={handleSubmit}>
-          Submit
-        </Button>
-      </Item>
-      <Item>
-        <Typography
-          variant='h6'
-          noWrap
-          component='a'
-          href='/'
-          sx={{
-            fontWeight: 700,
-            color: 'inherit',
-            textDecoration: 'none',
-          }}
-        >
-          Don't you have account yet? Please{' '}
-          <Link to='/register' style={{ textDecoration: 'none' }}>
-            Register
-          </Link>{' '}
-          Here
-        </Typography>
-      </Item>
+      {loginStatus === LoadingStatus.loading ? <Spinner loadingStatus={loginStatus} /> : <>
+        <Item>
+          <Typography
+            variant='h2'
+            noWrap
+            component='a'
+            href='/'
+            sx={{
+              fontWeight: 200,
+              color: 'inherit',
+              textDecoration: 'none',
+            }}
+          >
+            Login
+          </Typography>
+          <TextField
+            required
+            id='email'
+            label='Email'
+            name='email'
+            value={formData.email}
+            onChange={handleChange}
+          />
+          <div style={{ color: 'red', fontWeight: 'light' }}>{emailError}</div>
+          <TextField
+            required
+            id='password'
+            label='Password'
+            type='password'
+            name='password'
+            value={formData.password}
+            onChange={handleChange}
+          />
+          <div style={{ color: 'red', fontWeight: 'light' }}>{passwordError}</div>
+          <Button variant='contained' sx={{ m: 2, width: '50%' }} onClick={handleSubmit}>
+            Submit
+          </Button>
+        </Item>
+        <Item>
+          <Typography
+            variant='h6'
+            noWrap
+            component='a'
+            href='/'
+            sx={{
+              fontWeight: 700,
+              color: 'inherit',
+              textDecoration: 'none',
+            }}
+          >
+            Don't you have account yet? Please{' '}
+            <Link to='/register' style={{ textDecoration: 'none' }}>
+              Register
+            </Link>{' '}
+            Here
+          </Typography>
+        </Item></>}
     </Box>
   );
 }

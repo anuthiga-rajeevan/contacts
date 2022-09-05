@@ -14,7 +14,6 @@ function App() {
       <Header />
       {/* @ts-ignore */}
       <Alert />
-
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
