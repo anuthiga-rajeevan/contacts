@@ -6,6 +6,8 @@ import Home from './pages/home/Home';
 import Login from './pages/user/Login';
 import Register from './pages/user/Register';
 import NotFound from './pages/notFound/NotFound';
+import Contacts from './pages/contact/Contacts';
+import AddContact from './pages/contact/AddContact';
 import Alert from './components/alert/Alert';
 
 function App() {
@@ -18,6 +20,8 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/contacts' element={<Contacts />} />
+        <Route path='/contacts/add' element={<AddContact />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </div>

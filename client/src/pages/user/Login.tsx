@@ -26,15 +26,15 @@ function Login() {
 
   useEffect(() => {
     if (loginStatus === LoadingStatus.success && getUserInfoStatus === LoadingStatus.idle) {
-        dispatch(getUser());
+      dispatch(getUser());
     }
     if (getUserInfoStatus === LoadingStatus.success && !userInfo.name) {
-        navigate('/login');
+      navigate('/login');
     }
     if (getUserInfoStatus === LoadingStatus.success && userInfo.name) {
-        navigate('/');
+      navigate('/contacts');
     }
-}, [getUserInfoStatus, loginStatus, dispatch, navigate, userInfo]);
+  }, [getUserInfoStatus, loginStatus, dispatch, navigate, userInfo]);
 
   const validate = () => {
     setEmailError(null);

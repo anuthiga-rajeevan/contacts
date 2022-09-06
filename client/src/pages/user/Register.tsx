@@ -40,7 +40,7 @@ function Register() {
             navigate('/login');
         }
         if (getUserInfoStatus === LoadingStatus.success && userInfo.name) {
-            navigate('/');
+            navigate('/contacts');
         }
     }, [getUserInfoStatus, loginStatus, dispatch, navigate, userInfo]);
 

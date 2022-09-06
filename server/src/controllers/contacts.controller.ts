@@ -9,9 +9,8 @@ import logger from '../common/logger';
  * @access   Private
  */
 export const createContact = asyncHandler(async (req, res, next) => {
-  const newJob = await Contact.create({ ...req.body });
-
-  res.status(201).json({ success: true, data: newJob });
+  const newContact = await Contact.create({ ...req.body, user_id: req.user.user_id });
+  res.status(201).json({ success: true, data: newContact });
 });
 
 /**
@@ -47,5 +46,38 @@ export const getContacts = asyncHandler(async (req, res, next) => {
  * @access   Private
  */
 export const deleteContact = asyncHandler(async (req, res, next) => {
-  res.status(200).json(res.advancedResults);
+  const { contactId } = req.params;
+  const contact = await Contact.findByIdAndDelete(contactId);
+
+  if (!contact) {
+    logger.error(`No contacts found with contact id ${contactId}`);
+    return next(new ErrorResponse(`No contacts found with contact id ${contactId}`, 404));
+  }
+
+  res.status(200).json({ success: true, data: contact });
+});
+
+/**
+ * @route    PUT api/contacts/:contactId
+ * @desc     Update a contact based on contactId
+ * @access   Private
+ */
+export const updateContact = asyncHandler(async (req, res, next) => {
+  const { contactId } = req.params;
+  const contact = await Contact.findByIdAndUpdate(
+    contactId,
+    {
+      ...req.body,
+      $set: { phone: req.body.phone, email: req.body.email },
+      user_id: req.user.user_id,
+    },
+    { new: true },
+  );
+
+  if (!contact) {
+    logger.error(`No contacts found with contact id ${contactId}`);
+    return next(new ErrorResponse(`No contacts found with contact id ${contactId}`, 404));
+  }
+
+  res.status(200).json({ success: true, data: contact });
 });

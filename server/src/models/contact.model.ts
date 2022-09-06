@@ -1,13 +1,5 @@
 import mongoose from 'mongoose';
 
-const importantDateSchema = new mongoose.Schema({
-  type: {
-    type: String,
-    required: [true, 'Important Date type is required'],
-  },
-  date: { type: Number, required: [true, 'Important Date is required'] },
-});
-
 const emailSchema = new mongoose.Schema({
   type: {
     type: String,
@@ -50,9 +42,6 @@ const contactSchema = new mongoose.Schema({
   email: {
     type: [emailSchema],
     required: [true, 'Email is required'],
-  },
-  importantDates: {
-    type: [importantDateSchema],
   },
   createdAt: {
     type: Number,

@@ -11,6 +11,11 @@ interface ContactState {
   filteredContacts: FilteredContact[] | [];
 }
 
+interface AddRequestArgs {
+    accessToken: String;
+    reqBody: ContactResponse;
+}
+
 const initialState: ContactState = {
   contacts: [],
   getContactsStatus: LoadingStatus.idle,
@@ -20,6 +25,21 @@ const initialState: ContactState = {
 export const getContacts = createAsyncThunk(
   'contact/getContacts',
   async (accessToken: string, { dispatch, rejectWithValue }) => {
+    try {
+      const getContactsResponse = await getContactsService(accessToken);
+      dispatch(setAlert({ msg: 'Contacts retrieved Successfully', type: 'success' }));
+      return getContactsResponse;
+    } catch (err: any) {
+      const error = err.response?.data?.error || 'Something went wrong';
+      dispatch(setAlert({ msg: error, type: 'error' }));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const addContact = createAsyncThunk(
+  'contact/addContact',
+  async ({ accessToken, reqBody }: AddRequestArgs, { dispatch, rejectWithValue }) => {
     try {
       const getContactsResponse = await getContactsService(accessToken);
       dispatch(setAlert({ msg: 'Contacts retrieved Successfully', type: 'success' }));
@@ -46,10 +66,13 @@ const contactSlice = createSlice({
       })
       .addMatcher(isAnyOf(getContacts.pending), (state, action) => {
         state.getContactsStatus = LoadingStatus.idle;
+        state.contacts = [];
+        state.filteredContacts = [];
       })
       .addMatcher(isAnyOf(getContacts.rejected), (state, action) => {
         state.getContactsStatus = LoadingStatus.failed;
         state.contacts = [];
+        state.filteredContacts = [];
       });
   },
 });
