@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ContactResponse } from '../types/types';
+import { Contact, ContactResponse } from '../types/types';
 
 export async function getContacts(accessToken: String): Promise<ContactResponse[]> {
   const response = await axios.get('/api/contacts', {
@@ -11,10 +11,7 @@ export async function getContacts(accessToken: String): Promise<ContactResponse[
   return response.data.data;
 }
 
-export async function addContact(
-  accessToken: String,
-  reqBody: ContactResponse,
-): Promise<ContactResponse[]> {
+export async function addContact(accessToken: String, reqBody: Contact): Promise<ContactResponse> {
   const response = await axios.post(
     '/api/contacts',
     { ...reqBody },
@@ -24,6 +21,19 @@ export async function addContact(
       },
     },
   );
+
+  return response.data.data;
+}
+
+export async function deleteContact(
+  accessToken: String,
+  contactId: String,
+): Promise<ContactResponse> {
+  const response = await axios.delete(`/api/contacts/${contactId}`, {
+    headers: {
+      authorization: `${accessToken}`,
+    },
+  });
 
   return response.data.data;
 }

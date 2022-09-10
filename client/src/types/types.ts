@@ -35,10 +35,6 @@ export interface Email {
   isPrimary: boolean;
 }
 
-export interface ImportantDates {
-  type: String;
-  date: number;
-}
 export interface ContactResponse {
   _id: String;
   user_id: String;
@@ -46,7 +42,6 @@ export interface ContactResponse {
   lastName: String;
   phone: PhoneNo[];
   email: Email[];
-  importantDates: ImportantDates[];
 }
 
 export interface FilteredContact {
@@ -56,4 +51,11 @@ export interface FilteredContact {
   lastName: String;
   phoneNo: String;
   emailAddress: String;
+}
+
+export interface Contact {
+  firstName: String;
+  lastName: String;
+  phone: PhoneNo[];
+  email: Email[];
 }

@@ -67,63 +67,68 @@ function Login() {
       }}
       autoComplete='off'
     >
-      {loginStatus === LoadingStatus.loading ? <Spinner loadingStatus={loginStatus} /> : <>
-        <Item>
-          <Typography
-            variant='h2'
-            noWrap
-            component='a'
-            href='/'
-            sx={{
-              fontWeight: 200,
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            Login
-          </Typography>
-          <TextField
-            required
-            id='email'
-            label='Email'
-            name='email'
-            value={formData.email}
-            onChange={handleChange}
-          />
-          <div style={{ color: 'red', fontWeight: 'light' }}>{emailError}</div>
-          <TextField
-            required
-            id='password'
-            label='Password'
-            type='password'
-            name='password'
-            value={formData.password}
-            onChange={handleChange}
-          />
-          <div style={{ color: 'red', fontWeight: 'light' }}>{passwordError}</div>
-          <Button variant='contained' sx={{ m: 2, width: '50%' }} onClick={handleSubmit}>
-            Submit
-          </Button>
-        </Item>
-        <Item>
-          <Typography
-            variant='h6'
-            noWrap
-            component='a'
-            href='/'
-            sx={{
-              fontWeight: 700,
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            Don't you have account yet? Please{' '}
-            <Link to='/register' style={{ textDecoration: 'none' }}>
-              Register
-            </Link>{' '}
-            Here
-          </Typography>
-        </Item></>}
+      {loginStatus === LoadingStatus.loading ? (
+        <Spinner loadingStatus={loginStatus} />
+      ) : (
+        <>
+          <Item>
+            <Typography
+              variant='h2'
+              noWrap
+              component='a'
+              href='/'
+              sx={{
+                fontWeight: 200,
+                color: 'inherit',
+                textDecoration: 'none',
+              }}
+            >
+              Login
+            </Typography>
+            <TextField
+              required
+              id='email'
+              label='Email'
+              name='email'
+              value={formData.email}
+              onChange={handleChange}
+            />
+            <div style={{ color: 'red', fontWeight: 'light' }}>{emailError}</div>
+            <TextField
+              required
+              id='password'
+              label='Password'
+              type='password'
+              name='password'
+              value={formData.password}
+              onChange={handleChange}
+            />
+            <div style={{ color: 'red', fontWeight: 'light' }}>{passwordError}</div>
+            <Button variant='contained' sx={{ m: 2, width: '50%' }} onClick={handleSubmit}>
+              Submit
+            </Button>
+          </Item>
+          <Item>
+            <Typography
+              variant='h6'
+              noWrap
+              component='a'
+              href='/'
+              sx={{
+                fontWeight: 700,
+                color: 'inherit',
+                textDecoration: 'none',
+              }}
+            >
+              Don't you have account yet? Please{' '}
+              <Link to='/register' style={{ textDecoration: 'none' }}>
+                Register
+              </Link>{' '}
+              Here
+            </Typography>
+          </Item>
+        </>
+      )}
     </Box>
   );
 }

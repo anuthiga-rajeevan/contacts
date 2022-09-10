@@ -13,16 +13,13 @@ const Alert = () => {
     if (alerts.length > 0) {
       setTimeout(() => dispatch(removeAlert()), 5000);
     }
-  })
+  });
   if (alerts !== null && alerts.length > 0) {
-    return (<Snackbar
-      key={alerts[0].id}
-      open={true}
-      autoHideDuration={6000}
-      message={alerts[0].msg}
-    />)
+    return (
+      <Snackbar key={alerts[0].id} open={true} autoHideDuration={6000} message={alerts[0].msg} />
+    );
   }
-  
+
   return null;
 };
 

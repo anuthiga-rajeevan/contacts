@@ -8,6 +8,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 const initialState = {
   user: { userInfo: { name: 'test', email: 'test@gmail.com', token: 'token' } },
+  alert: [],
 };
 const mockStore = configureStore();
 let store;

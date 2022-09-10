@@ -10,11 +10,7 @@ import ErrorResponse from '../utils/ErrorResponse';
 //   };
 // };
 
-export default async function authenticationRequired(
-  req,
-  res: Response,
-  next: NextFunction,
-) {
+export default async function authenticationRequired(req, res: Response, next: NextFunction) {
   if (!req.headers.authorization) {
     return next(new ErrorResponse('Unauthorized', 401));
   }
