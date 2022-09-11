@@ -92,7 +92,11 @@ export const deleteContact = createAsyncThunk(
 const contactSlice = createSlice({
   name: 'contactSlice',
   initialState,
-  reducers: {},
+  reducers: {
+    setGetContactsStatus(state) {
+      state.getContactsStatus = LoadingStatus.idle;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getContacts.fulfilled, (state, action) => {
@@ -122,5 +126,5 @@ const contactSlice = createSlice({
   },
 });
 
-export const {} = contactSlice.actions;
+export const { setGetContactsStatus } = contactSlice.actions;
 export default contactSlice.reducer;

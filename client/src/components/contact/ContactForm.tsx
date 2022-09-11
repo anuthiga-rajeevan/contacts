@@ -1,5 +1,5 @@
 import React from 'react';
-import { Contact } from '../../types/types';
+import { Contact, IEmail, IPhone } from '../../types/types';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import {
@@ -14,14 +14,17 @@ import {
   Checkbox,
   IconButton,
   Divider,
+  SelectChangeEvent,
 } from '@mui/material';
 
 interface IProps {
   formData: Contact;
-  handleChange: () => void;
+  handleChange: (evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   handleSubmit: () => void;
   handleCancel: () => void;
   addPhoneEmail: (type: String) => void;
+  deletePhoneEmail: (type: String, index: number) => void;
+  handlePhoneEmailChange: (data: IPhone | IEmail) => void;
 }
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -42,9 +45,33 @@ const ContactForm = ({
   handleSubmit,
   handleCancel,
   addPhoneEmail,
+  deletePhoneEmail,
+  handlePhoneEmailChange,
 }: IProps) => {
   const phoneNoTypes = ['home', 'mobile', 'work', 'business'];
   const emailTypes = ['personal', 'work', 'business'];
+
+  const handlePhoneChange = (
+    evt: SelectChangeEvent<String> | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    index: number,
+  ) => {
+    handlePhoneEmailChange({
+      type: 'phone',
+      index,
+      data: { ...formData.phone[index], [evt.target.name]: evt.target.value },
+    });
+  };
+
+  const handleEmailChange = (
+    evt: SelectChangeEvent<String> | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    index: number,
+  ) => {
+    handlePhoneEmailChange({
+      type: 'email',
+      index,
+      data: { ...formData.email[index], [evt.target.name]: evt.target.value },
+    });
+  };
 
   return (
     <Box
@@ -77,7 +104,7 @@ const ContactForm = ({
           label='First Name'
           name='firstName'
           value={formData.firstName}
-          onChange={handleChange}
+          onChange={(evt) => handleChange(evt)}
         />
         <TextField
           required
@@ -85,7 +112,7 @@ const ContactForm = ({
           label='Last Name'
           name='lastName'
           value={formData.lastName}
-          onChange={handleChange}
+          onChange={(evt) => handleChange(evt)}
         />
         <InnerItem variant='outlined' sx={{ ml: 2, width: '93%', mb: 2 }}>
           <Typography
@@ -102,14 +129,15 @@ const ContactForm = ({
           >
             Phone
           </Typography>
-          {formData.phone.map((phone) => (
-            <Paper elevation={0} sx={{ mt: 2 }}>
+          {formData.phone.map((phone, index) => (
+            <Paper elevation={0} sx={{ mt: 2 }} key={`phone${index}`}>
               <Select
                 labelId='demo-select-small'
                 id='demo-select-small'
                 value={phone.type}
+                name='type'
                 label='Type'
-                onChange={handleChange}
+                onChange={(evt) => handlePhoneChange(evt, index)}
                 sx={{ ml: 2, width: '15%' }}
               >
                 {phoneNoTypes.map((phoneNoType) => (
@@ -124,11 +152,27 @@ const ContactForm = ({
                 label='Phone No'
                 name='phoneNo'
                 value={phone.phoneNo}
-                onChange={handleChange}
+                onChange={(evt) => handlePhoneChange(evt, index)}
                 sx={{ ml: 2 }}
               />
-              <Checkbox checked={phone.isPrimary} sx={{ ml: 2 }} />
-              <IconButton aria-label='delete' size='large' color='error' sx={{ ml: 5 }}>
+              <Checkbox
+                checked={phone.isPrimary}
+                sx={{ ml: 2 }}
+                onChange={(evt) =>
+                  handlePhoneEmailChange({
+                    type: 'phone',
+                    index,
+                    data: { ...formData.phone[index], isPrimary: evt.target.checked },
+                  })
+                }
+              />
+              <IconButton
+                aria-label='delete'
+                size='large'
+                color='error'
+                sx={{ ml: 5 }}
+                onClick={() => deletePhoneEmail('phone', index)}
+              >
                 <DeleteIcon fontSize='large' />
               </IconButton>
               <Divider />
@@ -159,14 +203,15 @@ const ContactForm = ({
           >
             Email
           </Typography>
-          {formData.email.map((email) => (
-            <Paper elevation={0} sx={{ mt: 2 }}>
+          {formData.email.map((email, index) => (
+            <Paper elevation={0} sx={{ mt: 2 }} key={`email${index}`}>
               <Select
                 labelId='demo-select-small'
                 id='demo-select-small'
                 value={email.type}
                 label='Type'
-                onChange={handleChange}
+                name='type'
+                onChange={(evt) => handleEmailChange(evt, index)}
                 sx={{ ml: 2, width: '15%' }}
               >
                 {emailTypes.map((emailType) => (
@@ -181,11 +226,27 @@ const ContactForm = ({
                 label='Email Address'
                 name='email'
                 value={email.email}
-                onChange={handleChange}
+                onChange={(evt) => handleEmailChange(evt, index)}
                 sx={{ ml: 2 }}
               />
-              <Checkbox checked={email.isPrimary} sx={{ ml: 2 }} />
-              <IconButton aria-label='delete' size='large' color='error' sx={{ ml: 5 }}>
+              <Checkbox
+                checked={email.isPrimary}
+                sx={{ ml: 2 }}
+                onChange={(evt) =>
+                  handlePhoneEmailChange({
+                    type: 'email',
+                    index,
+                    data: { ...formData.email[index], isPrimary: evt.target.checked },
+                  })
+                }
+              />
+              <IconButton
+                aria-label='delete'
+                size='large'
+                color='error'
+                sx={{ ml: 5 }}
+                onClick={() => deletePhoneEmail('email', index)}
+              >
                 <DeleteIcon fontSize='large' />
               </IconButton>
               <Divider />

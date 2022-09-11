@@ -12,8 +12,8 @@ import ConfirmationModal from '../../components/confirmationModal/ConfirmationMo
 import { IconButton } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../store';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../store';
 import { deleteContact as deleteContactAction } from '../../store/contactSlice';
 
 const ContactList = ({ contacts, userInfo }: { contacts: FilteredContact[]; userInfo: User }) => {
@@ -31,6 +31,8 @@ const ContactList = ({ contacts, userInfo }: { contacts: FilteredContact[]; user
       dispatch(
         deleteContactAction({ accessToken: userInfo.token, contactId: selectedContact?._id }),
       );
+      setSelectedContact(undefined);
+      setShowConfirm(false);
     }
   };
   return (

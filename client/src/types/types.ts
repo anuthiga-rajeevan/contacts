@@ -59,3 +59,15 @@ export interface Contact {
   phone: PhoneNo[];
   email: Email[];
 }
+
+export interface IPhone {
+  type: 'phone';
+  index: number;
+  data: PhoneNo;
+}
+
+export interface IEmail {
+  type: 'email';
+  index: number;
+  data: Email;
+}

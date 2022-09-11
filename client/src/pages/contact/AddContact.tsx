@@ -4,13 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import { AppDispatch, RootState } from '../../store';
 import { getUser } from '../../store/userSlice';
 import { addContact } from '../../store/contactSlice';
-import { Contact, LoadingStatus } from '../../types/types';
+import { Contact, LoadingStatus, IEmail, IPhone } from '../../types/types';
 import ContactForm from '../../components/contact/ContactForm';
+import Spinner from '../../components/spinner/Spinner';
 
 const AddContact = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const getUserInfoStatus = useSelector((state: RootState) => state.user.getUserInfoStatus);
+  const getContactsStatus = useSelector((state: RootState) => state.contact.getContactsStatus);
   const userInfo = useSelector((state: RootState) => state.user.userInfo);
   const initialData = {
     firstName: '',
@@ -43,21 +45,33 @@ const AddContact = () => {
     setFormData(initialData);
   };
 
-  const handleChange = () => {};
+  const handleChange = (evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [evt.target.name]: evt.target.value });
+  };
 
-  const addPhoneEmail = (type: String) => {
-    console.log('addPhoneEmail called', type);
+  const handlePhoneEmailChange = (data: IPhone | IEmail) => {
+    const { type, index, data: updatedData } = data;
     if (type === 'phone') {
       const phoneData = formData.phone;
-      console.log(phoneData);
+      phoneData[index] = updatedData;
+      setFormData({ ...formData, phone: phoneData });
+    }
+    if (type === 'email') {
+      const emailData = formData.email;
+      emailData[index] = updatedData;
+      setFormData({ ...formData, email: emailData });
+    }
+  };
+
+  const addPhoneEmail = (type: String) => {
+    if (type === 'phone') {
+      const phoneData = formData.phone;
       phoneData.push({
         type: '',
         phoneNo: '',
         isPrimary: false,
       });
-      console.log(phoneData);
       setFormData({ ...formData, phone: phoneData });
-      console.log(formData);
     }
     if (type === 'email') {
       const emailData = formData.email;
@@ -70,7 +84,18 @@ const AddContact = () => {
     }
   };
 
-  const deletePhoneEmail = (type: String, index: Number) => {};
+  const deletePhoneEmail = (type: String, index: number) => {
+    if (type === 'phone') {
+      const phoneData = formData.phone;
+      phoneData.splice(index, 1);
+      setFormData({ ...formData, phone: phoneData });
+    }
+    if (type === 'email') {
+      const emailData = formData.email;
+      emailData.splice(index, 1);
+      setFormData({ ...formData, email: emailData });
+    }
+  };
 
   useEffect(() => {
     if (getUserInfoStatus === LoadingStatus.idle) {
@@ -79,7 +104,15 @@ const AddContact = () => {
     if (getUserInfoStatus === LoadingStatus.success && !userInfo.name) {
       navigate('/login');
     }
-  }, [getUserInfoStatus, dispatch, navigate, userInfo]);
+    if (getContactsStatus === LoadingStatus.success) {
+      navigate('/contacts');
+    }
+  }, [getUserInfoStatus, dispatch, navigate, userInfo, getContactsStatus]);
+
+  if (getContactsStatus === LoadingStatus.loading) {
+    return <Spinner loadingStatus={getContactsStatus} />;
+  }
+
   return (
     <ContactForm
       formData={formData}
@@ -87,6 +120,8 @@ const AddContact = () => {
       handleCancel={handleCancel}
       handleChange={handleChange}
       addPhoneEmail={addPhoneEmail}
+      deletePhoneEmail={deletePhoneEmail}
+      handlePhoneEmailChange={handlePhoneEmailChange}
     />
   );
 };

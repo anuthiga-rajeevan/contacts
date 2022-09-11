@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { AppDispatch, RootState } from '../../store';
-import { getContacts } from '../../store/contactSlice';
+import { getContacts, setGetContactsStatus } from '../../store/contactSlice';
 import { getUser } from '../../store/userSlice';
 import { LoadingStatus } from '../../types/types';
 import ContactList from '../../components/contact/ContactList';
@@ -16,6 +16,11 @@ const Contacts = () => {
   const getContactsStatus = useSelector((state: RootState) => state.contact.getContactsStatus);
   const filteredContacts = useSelector((state: RootState) => state.contact.filteredContacts);
   const userInfo = useSelector((state: RootState) => state.user.userInfo);
+
+  const goToAddNewContact = () => {
+    dispatch(setGetContactsStatus());
+    navigate('/contacts/add');
+  };
 
   useEffect(() => {
     if (getUserInfoStatus === LoadingStatus.idle) {
@@ -34,7 +39,7 @@ const Contacts = () => {
   }, [getUserInfoStatus, dispatch, navigate, userInfo, getContactsStatus]);
   return (
     <Paper sx={{ width: '90%', mt: 5 }} elevation={0}>
-      <Button variant='contained' sx={{ p: 2, mb: 5 }} onClick={() => navigate('/contacts/add')}>
+      <Button variant='contained' sx={{ p: 2, mb: 5 }} onClick={goToAddNewContact}>
         Add New Contact
       </Button>
       <Spinner loadingStatus={getContactsStatus} />
