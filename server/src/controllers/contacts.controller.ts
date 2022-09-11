@@ -26,6 +26,13 @@ export const getContact = asyncHandler(async (req, res, next) => {
     logger.error(`No contacts found with contact id ${contactId}`);
     return next(new ErrorResponse(`No contacts found with contact id ${contactId}`, 404));
   }
+  console.log(contact)
+  console.log(contact.user_id)
+  console.log(req.user.user_id)
+  if (contact.user_id != req.user.user_id) {
+    logger.error(`You don't own this contact`);
+    return next(new ErrorResponse(`You don't own this contact`, 404));
+  }
 
   res.status(200).json({ success: true, data: contact });
 });
@@ -36,7 +43,7 @@ export const getContact = asyncHandler(async (req, res, next) => {
  * @access   Private
  */
 export const getContacts = asyncHandler(async (req, res, next) => {
-  const contacts = await Contact.find();
+  const contacts = await Contact.find({user_id: req.user.user_id});
   res.status(200).json({ success: true, data: contacts });
 });
 

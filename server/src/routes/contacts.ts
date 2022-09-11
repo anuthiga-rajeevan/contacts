@@ -13,11 +13,11 @@ const Router = express.Router();
 
 Router.route('/')
   .get(authenticationRequired, getContacts)
-  .post(authenticationRequired, validator('contact'), createContact);
+  .post(authenticationRequired, validator('addContact'), createContact);
 
 Router.route('/:contactId')
   .get(authenticationRequired, getContact)
-  .put(authenticationRequired, validator('contact'), updateContact)
+  .put(authenticationRequired, validator('updateContact'), updateContact)
   .delete(authenticationRequired, deleteContact);
 
 export default Router;

@@ -1,4 +1,4 @@
 import { register, login } from './users.validators';
-import { contact } from './contacts.validators';
+import { addContact, updateContact } from './contacts.validators';
 
-export default { register, login, contact };
+export default { register, login, addContact, updateContact };

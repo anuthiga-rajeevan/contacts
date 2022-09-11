@@ -115,6 +115,7 @@ const AddContact = () => {
 
   return (
     <ContactForm
+      heading='Add Contact'
       formData={formData}
       handleSubmit={handleSave}
       handleCancel={handleCancel}

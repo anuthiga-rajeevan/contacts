@@ -4,6 +4,8 @@ import {
   getContacts as getContactsService,
   addContact as addContactService,
   deleteContact as deleteContactService,
+  getContact as getContactService,
+  updateContact as updateContactService,
 } from './../service/contact';
 import { setAlert } from './alertSlice';
 import { filterContacts } from './../utils/contact.utils';
@@ -14,10 +16,18 @@ interface ContactState {
   contacts: ContactResponse[] | [];
   getContactsStatus: LoadingStatus;
   filteredContacts: FilteredContact[] | [];
+  contact: ContactResponse | null;
+  getContactStatus: LoadingStatus;
 }
 
 interface AddRequestArgs {
   accessToken: String;
+  reqBody: Contact;
+}
+
+interface UpdateRequestArgs {
+  accessToken: String;
+  contactId: String;
   reqBody: Contact;
 }
 
@@ -30,6 +40,8 @@ const initialState: ContactState = {
   contacts: [],
   getContactsStatus: LoadingStatus.idle,
   filteredContacts: [],
+  contact: null,
+  getContactStatus: LoadingStatus.idle,
 };
 
 export const getContacts = createAsyncThunk(
@@ -51,6 +63,28 @@ export const getContacts = createAsyncThunk(
   },
 );
 
+export const getContact = createAsyncThunk(
+  'contact/getContact',
+  async (
+    { accessToken, contactId }: { accessToken: String; contactId: String },
+    { dispatch, rejectWithValue },
+  ) => {
+    try {
+      const getContactResponse = await getContactService(accessToken, contactId);
+      dispatch(setAlert({ msg: 'Contact detail retrieved Successfully', type: 'success' }));
+      return getContactResponse;
+    } catch (err: any) {
+      const error = err.response?.data?.error || 'Something went wrong';
+      dispatch(setAlert({ msg: error, type: 'error' }));
+      if (err.response?.data?.error === 'jwt expired') {
+        dispatch(logout());
+      }
+
+      return rejectWithValue(error);
+    }
+  },
+);
+
 export const addContact = createAsyncThunk(
   'contact/addContact',
   async ({ accessToken, reqBody }: AddRequestArgs, { dispatch, rejectWithValue }) => {
@@ -59,6 +93,25 @@ export const addContact = createAsyncThunk(
       dispatch(setAlert({ msg: 'Contact added Successfully', type: 'success' }));
       dispatch(getContacts(accessToken));
       return addContactResponse;
+    } catch (err: any) {
+      const error = err.response?.data?.error || 'Something went wrong';
+      dispatch(setAlert({ msg: error, type: 'error' }));
+      if (err.response?.data?.error === 'jwt expired') {
+        dispatch(logout());
+      }
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const updateContact = createAsyncThunk(
+  'contact/updateContact',
+  async ({ accessToken, contactId, reqBody }: UpdateRequestArgs, { dispatch, rejectWithValue }) => {
+    try {
+      const updateContactResponse = await updateContactService(accessToken, contactId, reqBody);
+      dispatch(setAlert({ msg: 'Contact updated Successfully', type: 'success' }));
+      dispatch(getContacts(accessToken));
+      return updateContactResponse;
     } catch (err: any) {
       const error = err.response?.data?.error || 'Something went wrong';
       dispatch(setAlert({ msg: error, type: 'error' }));
@@ -104,23 +157,48 @@ const contactSlice = createSlice({
         state.contacts = action.payload;
         state.filteredContacts = filterContacts(action.payload);
       })
-      .addMatcher(isAnyOf(addContact.fulfilled, deleteContact.fulfilled), (state, action) => {
-        state.getContactsStatus = LoadingStatus.success;
+      .addCase(getContact.fulfilled, (state, action) => {
+        state.getContactStatus = LoadingStatus.success;
+        state.contact = action.payload;
+      })
+      .addCase(getContacts.rejected, (state, action) => {
+        state.getContactsStatus = LoadingStatus.failed;
+        state.contacts = [];
+        state.filteredContacts = [];
+      })
+      .addCase(getContact.rejected, (state, action) => {
+        state.contact = null;
+        state.getContactStatus = LoadingStatus.failed;
+      })
+      .addCase(getContact.pending, (state, action) => {
+        state.contact = null;
+        state.getContactStatus = LoadingStatus.loading;
       })
       .addMatcher(
-        isAnyOf(getContacts.pending, addContact.pending, deleteContact.pending),
+        isAnyOf(addContact.fulfilled, deleteContact.fulfilled, updateContact.fulfilled),
         (state, action) => {
-          state.getContactsStatus = LoadingStatus.idle;
-          state.contacts = [];
-          state.filteredContacts = [];
+          state.getContactsStatus = LoadingStatus.success;
         },
       )
       .addMatcher(
-        isAnyOf(getContacts.rejected, addContact.rejected, deleteContact.rejected),
+        isAnyOf(
+          getContacts.pending,
+          addContact.pending,
+          deleteContact.pending,
+          updateContact.pending,
+        ),
+        (state, action) => {
+          state.getContactsStatus = LoadingStatus.loading;
+        },
+      )
+      .addMatcher(
+        isAnyOf(
+          addContact.rejected,
+          deleteContact.rejected,
+          updateContact.rejected,
+        ),
         (state, action) => {
           state.getContactsStatus = LoadingStatus.failed;
-          state.contacts = [];
-          state.filteredContacts = [];
         },
       );
   },

@@ -14,7 +14,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
-import { deleteContact as deleteContactAction } from '../../store/contactSlice';
+import { deleteContact as deleteContactAction, setGetContactsStatus } from '../../store/contactSlice';
 
 const ContactList = ({ contacts, userInfo }: { contacts: FilteredContact[]; userInfo: User }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -65,7 +65,7 @@ const ContactList = ({ contacts, userInfo }: { contacts: FilteredContact[]; user
                     color='primary'
                     aria-label='edit'
                     component='label'
-                    onClick={() => navigate(`/contacts/edit/${contact._id}`)}
+                    onClick={() => {dispatch(setGetContactsStatus());navigate(`/contacts/edit/${contact._id}`)}}
                   >
                     <EditIcon />
                   </IconButton>

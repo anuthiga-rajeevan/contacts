@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 
 interface IProps {
+  heading: string;
   formData: Contact;
   handleChange: (evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   handleSubmit: () => void;
@@ -40,6 +41,7 @@ const InnerItem = styled(Paper)(({ theme }) => ({
 }));
 
 const ContactForm = ({
+  heading,
   formData,
   handleChange,
   handleSubmit,
@@ -96,7 +98,7 @@ const ContactForm = ({
             textDecoration: 'none',
           }}
         >
-          Add Contact
+          {heading}
         </Typography>
         <TextField
           required

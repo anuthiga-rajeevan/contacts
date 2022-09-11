@@ -8,6 +8,7 @@ import Register from './pages/user/Register';
 import NotFound from './pages/notFound/NotFound';
 import Contacts from './pages/contact/Contacts';
 import AddContact from './pages/contact/AddContact';
+import EditContact from './pages/contact/EditContact';
 import Alert from './components/alert/Alert';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path='/register' element={<Register />} />
         <Route path='/contacts' element={<Contacts />} />
         <Route path='/contacts/add' element={<AddContact />} />
+        <Route path='/contacts/edit/:contactId' element={<EditContact />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </div>
