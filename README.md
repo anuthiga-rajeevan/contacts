@@ -1,25 +1,103 @@
-# Contacts
-## Welcome
+# 📇 Contacts App
 
-This project is just to show case my knowledge in node.js and react.js. Anyone can register to the application using valid email address and login to the application. After login they can add, edit, view and delete contacts.
+Welcome to the **Contacts App** — a full-stack application built with **Node.js** (Backend) and **React.js** (Frontend). This project was developed to demonstrate core skills in modern JavaScript development, including user authentication, CRUD operations, and testing practices.
 
-### Current Code & Structure
+---
 
-The application is split into two parts, the server (BE) and the client (FE).
+## 🚀 Features
 
-### Steps to follow for getting up & running
+- 🔐 **User Authentication**
+  - Register with a valid email and password
+  - Login functionality with **JWT-based authentication**
+
+- 📋 **Contact Management**  
+  After logging in, users can:
+  - Add new contacts
+  - Edit existing contacts
+  - View contact details
+  - Delete contacts
+
+---
+
+## 🧱 Tech Stack
+
+**Frontend:**
+- React.js
+- React Router
+- Redux for Statemanagement / Local Storage for auth
+
+**Backend:**
+- Node.js
+- Express.js
+- MongoDB with Mongoose
+- JSON Web Tokens (JWT) for secure authentication
+
+**Testing:**
+- Jest
+- React Testing Library
+- Supertest (for API testing)
+
+**Tooling:**
+- Concurrently
+- Nodemon
+- dotenv
+
+---
+
+## 📁 Project Structure
+
+```
+root/
+├── server/       # Node.js backend with Express + MongoDB + JWT
+│   ├── routes/           # Express route handlers
+│   ├── controllers/      # Logic for route handling
+│   ├── models/           # Mongoose schemas
+│   └── middleware/       # Auth & error-handling middleware
+│
+├── client/       # React.js frontend
+│   ├── components/       # Reusable UI components
+│   ├── pages/            # Page-level components (views)
+│   └── services/         # API interaction logic
+│
+├── package.json  # Root scripts to run client and server
+```
+
+---
+
+## ⚙️ Getting Started
+
+Follow these steps to install dependencies and run the project locally:
+
+```bash
+# Step 1: Install root dependencies
+npm install
+
+# Step 2: Install backend dependencies
+cd server
+npm install
+
+# Step 3: Install frontend dependencies
+cd ../client
+npm install
+
+# Step 4: Return to root and start both client and server
+cd ..
+npm run start   #This command runs both the frontend and backend concurrently using a single terminal.
+```
+---
+
+## 🧪 Running Tests
+Test suites are provided for both frontend and backend code.
+
+**Run frontend (React) tests**
+```bash
+npm run test:client
+```
+
+**Run backend (Node.js) tests**
+```bash
+npm run test:server
+```
 
 
-1) `npm i` in root directory
-2) `cd server`
-3) `npm i` in server folder
-4) `cd ../client`
-5) `npm i` in client folder
-6) `cd ..`
-7) `npm run start` in root directory will run both client and server concurrently
-
-
-### How to run tests
-1) `npm run test:client` in root folder will run FE tests
-2) `npm run test:server` in root folder will run BE tests
 
